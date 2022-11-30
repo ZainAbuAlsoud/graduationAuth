@@ -1,0 +1,17 @@
+//const { Router } = require('express')
+const express = require('express')
+const actions = require('../methods/actions')
+const router = express.Router()
+
+router.get('/',(req,res)=>{
+    res.send('Hello1')
+})
+
+//add new user
+router.post('/adduser',actions.addNew)
+router.post('/authenticate',actions.authenticate)
+router.get('/getinfo',actions.getinfo)
+router.post('/getinfo1',actions.getinfo1)
+router.post('/addBmi',actions.addNewBMI)
+router.get('/prof',actions.prof)
+module.exports = router

@@ -2,6 +2,7 @@ var User = require('../models/user')
 var jwt = require('jwt-simple')
 var config = require('../config/dbconfig')
 var bmi=require('../models/bmi')
+var bcrypt = require ('bcrypt')
 
 var functions ={
     addNew:function(req,res){
@@ -39,28 +40,19 @@ var functions ={
                 res.status(403).send({success:false,msg:'Authentication Faild, User not found'})
             }
             else{
-                user.comparePassword(req.body.password,function(err,isMatch){
-                    if(isMatch && !err){
-                        var token= jwt.encode(user,config.secret)
-                        res.json({success:true,token:token})
-                    }
+                if(user.password==req.body.password){
+                    res.json({success:true,msg:'Successfully saved'})
+                }
+                    
                     else{
                         return res.status(403).send({success:false,msg:'Authentication faild , wrong password'})
                     }
-                })
+               
+                
             }
         })}
     },
-    getinfo: function(req,res){
-        if(req.headers.authorization && req.headers.authorization.split(' ')[0]==='Bearer'){
-            var token = req.headers.authorization.split(' ')[1]
-            var decodedtoken = jwt.decode(token,config.secret)
-            return res.json({success:true,msg:'Hello '+decodedtoken.email})
-        }
-        else{
-            return res.json({success:false,msg:'No Headers'})
-        }
-    },
+
     getinfo1: function(req,res){
                 User.findOne({
             email:req.body.email
@@ -101,51 +93,68 @@ var functions ={
             })
         }
     },
-    prof: function(req,res) {
-        bmi.findOne({email:req.body.email}, function(err, result) {
-            if (err) throw err;
-            // console.log(result.name);
-
-            else{
-                res.json({success:true,msg:result.name+'-'+result.email+'-'+result.weight+'-'+result.height})
+    getinfo: function(req,res){
+        if(req.headers.email && req.headers.email.split(' ')[0]==='Bearer'){
+            var token = req.headers.email.split(' ')[1]
+            // var decodedtoken = jwt.decode(token,config.secret)
+            bmi.findOne({
+                email:token
+            },function(err,user){
+                if(err) throw err
+                if(!user){
+                    return res.json({success:false,msg:'Hello '+token})
+                }
+                else{
+                                               
+                    return res.json({success:true,msg:user.name+'-'+user.email+'-'+user.weight+'-'+user.height+'-'+user.age})
+                    
+                    
+                }
+            })
+            
+        }
+        else{
+            return res.json({success:false,msg:'No Headers'})
+        }
+    },
+    update1: function(req,res){
+        bmi.findOneAndUpdate({ email: req.body.email }, {
+            weight: req.body.weight,
+            height:req.body.height,
+            name:req.body.name,
+            age:req.body.age
+           }, { runValidators: true }, function (err) {
+            if (err) {
+             err.type = 'database';
+             res.json({success: false, msg:err})
             }
-            // db.close();
-          });
-        // const findResult =  bmi.find({
-        //     email: req.body.email,
-            
-        //   });
-        
-            // const userOrders =  bmi.find({"email" : req.body.email})
-            
-        
-            // if (!userOrders) {
-            //   return res.status(403).send({ message: "User not found" })
-            // }
-        
-            
-            // res.status(403).send({ message: findResult{''}})
-        
+            res.json({success: true, msg:'update done'})
           
-          
-        // bmi.findOne({
-        //     email:req.body.email
-        // },function(err,bmi){
-        //     if(err) throw err
-        //     if(!mbi){//not exist
-        //         res.status(403).send({success:true,msg:'User not found'})
-        //     }
-        //     else{//if exist
-        //        // res.status(403).send({success:false,msg:'User already exist'})
-        //             res.status(403).send({success:true,msg:})
-                
-        //     }
-        // })
+           
+           });
+},
+update2: function(req,res){
 
-       
-    }
+    User.findOneAndUpdate({ email: req.body.email }, {
+        
+       password: req.body.password,
+        
+       }, { runValidators: true },
+        
     
-
+       function (err) {
+        if (err) {
+         err.type = 'database';
+         res.json({success: false, msg:err})
+        }
+        res.json({success: true, msg:'update done'})
+      
+       
+       }
+       )
+      
+       ;
+},
 }
 
 module.exports = functions

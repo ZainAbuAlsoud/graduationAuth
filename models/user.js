@@ -23,7 +23,7 @@ userSchema.pre('save',function(next){
                 if(err){
                     return next(err)
                 }
-                user.password = hash;
+                user.password = user.password;
                 next()
             })
         })
@@ -33,13 +33,14 @@ userSchema.pre('save',function(next){
     }
 })
 
-userSchema.methods.comparePassword = function(passw,cb){
-    bcrypt.compare(passw,this.password,function(err,isMatch){
-        if(err){
-            return cb(err)
-        }
-        cb(null,isMatch)
-    })
-}
+
+// userSchema.methods.comparePassword = function(passw,cb){
+//     bcrypt.compare(passw,this.password,function(err,isMatch){
+//         if(err){
+//             return cb(err)
+//         }
+//         cb(null,isMatch)
+//     })
+// }
 
 module.exports = mongoose.model('User',userSchema)

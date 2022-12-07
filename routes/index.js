@@ -13,5 +13,10 @@ router.post('/authenticate',actions.authenticate)
 router.get('/getinfo',actions.getinfo)
 router.post('/getinfo1',actions.getinfo1)
 router.post('/addBmi',actions.addNewBMI)
-router.get('/prof',actions.prof)
+router.post('/update1',actions.update1)
+router.post('/update2',actions.update2)
+
+
+// router.get('/prof',actions.prof)
+
 module.exports = router

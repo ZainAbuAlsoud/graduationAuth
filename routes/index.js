@@ -15,6 +15,9 @@ router.post('/getinfo1',actions.getinfo1)
 router.post('/addBmi',actions.addNewBMI)
 router.post('/update1',actions.update1)
 router.post('/update2',actions.update2)
+router.post('/addKeto',actions.addNewKETO)
+router.get('/getketo',actions.getKeto)
+router.get('/getketonum',actions.getKetoNUM)
 
 
 // router.get('/prof',actions.prof)

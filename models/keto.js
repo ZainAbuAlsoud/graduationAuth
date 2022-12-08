@@ -1,8 +1,8 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 var bcrypt = require ('bcrypt')
-var bmiSchema = new Schema({
-    email:{
+var ketoSchema = new Schema({
+    name:{
         type: String,
         require: true
     },
@@ -10,20 +10,21 @@ var bmiSchema = new Schema({
         type: String,
         require: true
     },
-    height:{
+    fats:{
         type: String,
         require: true
     },
-    age:{
+    protein:{
         type: String,
         require: true
     },
-    name:{
+    calories:{
         type: String,
         require: true
-    },
+    }
 })
 
 
 
-module.exports = mongoose.model('bmi',bmiSchema)
+
+module.exports = mongoose.model('keto',ketoSchema)

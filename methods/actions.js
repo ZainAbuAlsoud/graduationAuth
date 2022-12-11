@@ -4,6 +4,8 @@ var config = require('../config/dbconfig')
 var bmi=require('../models/bmi')
 var bcrypt = require ('bcrypt')
 var keto=require('../models/keto')
+var vegetarian=require('../models/vegetarian')
+var vegan=require('../models/vegan')
 
 var functions ={
     addNew:function(req,res){
@@ -190,6 +192,7 @@ addNewKETO:function(req,res){
                     res.json({success:true,msg:count_documents})
                   });
     },
+    
     getKeto: function(req,res){
         
                 keto.find({}).lean().exec(function(err, result) {
@@ -198,6 +201,59 @@ addNewKETO:function(req,res){
                     
                   });
     },
+
+
+    addNewVegetarian:function(req,res){
+        if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories)){
+            res.json({success: false , msg:'Enter all fields'})
+    
+        }
+        else{
+            var newVegetarian = vegetarian({
+                name:req.body.name,
+                weight: req.body.weight,
+                fats:req.body.fats,
+                protein: req.body.protein,
+                calories:req.body.calories,
+            });
+            newVegetarian.save(function(err,newVegetarian){
+                if(err){
+                    res.json({success: false, msg:'Failed to save'})
+                    console.log(err)
+                }
+                else{
+                    res.json({success:true,msg:'Successfully saved'})
+                }
+            })
+        }
+    },
+
+    addNewVegan:function(req,res){
+        if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories)){
+            res.json({success: false , msg:'Enter all fields'})
+    
+        }
+        else{
+            var newVegan = vegan({
+                name:req.body.name,
+                weight: req.body.weight,
+                fats:req.body.fats,
+                protein: req.body.protein,
+                calories:req.body.calories,
+            });
+            newVegan.save(function(err,newVegan){
+                if(err){
+                    res.json({success: false, msg:'Failed to save'})
+                    console.log(err)
+                }
+                else{
+                    res.json({success:true,msg:'Successfully saved'})
+                }
+            })
+        }
+    },
+
+ 
 }
 
 module.exports = functions

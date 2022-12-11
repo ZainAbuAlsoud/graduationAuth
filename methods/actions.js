@@ -5,7 +5,7 @@ var bmi=require('../models/bmi')
 var bcrypt = require ('bcrypt')
 var keto=require('../models/keto')
 var vegetarian=require('../models/vegetarian')
-var vegan=require('../models/vegan')
+
 
 var functions ={
     addNew:function(req,res){
@@ -186,12 +186,12 @@ addNewKETO:function(req,res){
 },
 
 
-    getKetoNUM: function(req,res){
+    // getKetoNUM: function(req,res){
         
-                keto.countDocuments().then((count_documents) => {
-                    res.json({success:true,msg:count_documents})
-                  });
-    },
+    //             keto.countDocuments().then((count_documents) => {
+    //                 res.json({success:true,msg:count_documents})
+    //               });
+    // },
     
     getKeto: function(req,res){
         
@@ -228,32 +228,14 @@ addNewKETO:function(req,res){
         }
     },
 
-    addNewVegan:function(req,res){
-        if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories)){
-            res.json({success: false , msg:'Enter all fields'})
-    
-        }
-        else{
-            var newVegan = vegan({
-                name:req.body.name,
-                weight: req.body.weight,
-                fats:req.body.fats,
-                protein: req.body.protein,
-                calories:req.body.calories,
-            });
-            newVegan.save(function(err,newVegan){
-                if(err){
-                    res.json({success: false, msg:'Failed to save'})
-                    console.log(err)
-                }
-                else{
-                    res.json({success:true,msg:'Successfully saved'})
-                }
-            })
-        }
-    },
-
- 
+    getVegetarian: function(req,res){
+        
+        vegetarian.find({}).lean().exec(function(err, result) {
+            if (err) res.json({success: false, msg:err});
+            res.json({success:true,msg:result})
+            
+          });
+},
 }
 
 module.exports = functions

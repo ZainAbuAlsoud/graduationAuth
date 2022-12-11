@@ -9,7 +9,6 @@ var ketoSchema = new Schema({
     weight:{
         type: String,
         require: true
-        
     },
     fats:{
         type: String,

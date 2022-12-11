@@ -17,9 +17,8 @@ router.post('/update1',actions.update1)
 router.post('/update2',actions.update2)
 router.post('/addKeto',actions.addNewKETO)
 router.get('/getketo',actions.getKeto)
-router.get('/getketonum',actions.getKetoNUM)
 router.post('/addVegetarian',actions.addNewVegetarian)
-router.post('/addVegan',actions.addNewVegan)
+router.get('/getVegetarian',actions.getVegetarian)
 
 
 // router.get('/prof',actions.prof)

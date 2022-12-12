@@ -6,6 +6,7 @@ var bcrypt = require ('bcrypt')
 var keto=require('../models/keto')
 var vegetarian=require('../models/vegetarian')
 var paleo=require('../models/paleo')
+var raw=require('../models/raw')
 
 var functions ={
     addNew:function(req,res){
@@ -265,6 +266,40 @@ addNewPaleo:function(req,res){
 getPaleo: function(req,res){
         
     paleo.find({}).lean().exec(function(err, result) {
+        if (err) res.json({success: false, msg:err});
+        res.json({success:true,msg:result})
+        
+      });
+},
+
+addNewRaw:function(req,res){
+    if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newRaw = raw({
+            name:req.body.name,
+            weight: req.body.weight,
+            fats:req.body.fats,
+            protein: req.body.protein,
+            calories:req.body.calories,
+        });
+        newRaw.save(function(err,newRaw){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
+},
+
+getRaw: function(req,res){
+        
+    raw.find({}).lean().exec(function(err, result) {
         if (err) res.json({success: false, msg:err});
         res.json({success:true,msg:result})
         

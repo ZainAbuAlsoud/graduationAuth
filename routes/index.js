@@ -21,6 +21,8 @@ router.post('/addVegetarian',actions.addNewVegetarian)
 router.get('/getVegetarian',actions.getVegetarian)
 router.post('/addNewPaleo',actions.addNewPaleo)
 router.get('/getPaleo',actions.getPaleo)
-// router.get('/prof',actions.prof)
+router.post('/addNewRaw',actions.addNewRaw)
+router.get('/getRaw',actions.getRaw)
+
 
 module.exports = router

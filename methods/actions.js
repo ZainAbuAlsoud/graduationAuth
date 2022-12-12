@@ -261,6 +261,15 @@ addNewPaleo:function(req,res){
         })
     }
 },
+
+getPaleo: function(req,res){
+        
+    paleo.find({}).lean().exec(function(err, result) {
+        if (err) res.json({success: false, msg:err});
+        res.json({success:true,msg:result})
+        
+      });
+},
 }
 
 module.exports = functions

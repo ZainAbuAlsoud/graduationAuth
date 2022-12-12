@@ -5,7 +5,7 @@ var bmi=require('../models/bmi')
 var bcrypt = require ('bcrypt')
 var keto=require('../models/keto')
 var vegetarian=require('../models/vegetarian')
-
+var paleo=require('../models/paleo')
 
 var functions ={
     addNew:function(req,res){
@@ -235,6 +235,31 @@ addNewKETO:function(req,res){
             res.json({success:true,msg:result})
             
           });
+},
+
+addNewPaleo:function(req,res){
+    if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newPaleo = paleo({
+            name:req.body.name,
+            weight: req.body.weight,
+            fats:req.body.fats,
+            protein: req.body.protein,
+            calories:req.body.calories,
+        });
+        newPaleo.save(function(err,newPaleo){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
 },
 }
 

@@ -25,5 +25,6 @@ router.post('/addNewRaw',actions.addNewRaw)
 router.get('/getRaw',actions.getRaw)
 router.post('/addNewCarb',actions.addNewCarb)
 router.get('/getCarb',actions.getCarb)
+router.post('/addNewSugar',actions.addNewSugar)
 
 module.exports = router

@@ -7,6 +7,7 @@ var keto=require('../models/keto')
 var vegetarian=require('../models/vegetarian')
 var paleo=require('../models/paleo')
 var raw=require('../models/raw')
+var carb=require('../models/lowcarb')
 
 var functions ={
     addNew:function(req,res){
@@ -300,6 +301,40 @@ addNewRaw:function(req,res){
 getRaw: function(req,res){
         
     raw.find({}).lean().exec(function(err, result) {
+        if (err) res.json({success: false, msg:err});
+        res.json({success:true,msg:result})
+        
+      });
+},
+
+addNewCarb:function(req,res){
+    if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newCarb = carb({
+            name:req.body.name,
+            weight: req.body.weight,
+            fats:req.body.fats,
+            protein: req.body.protein,
+            calories:req.body.calories,
+        });
+        newCarb.save(function(err,newRaw){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
+},
+
+getCarb: function(req,res){
+        
+    carb.find({}).lean().exec(function(err, result) {
         if (err) res.json({success: false, msg:err});
         res.json({success:true,msg:result})
         

@@ -23,6 +23,7 @@ router.post('/addNewPaleo',actions.addNewPaleo)
 router.get('/getPaleo',actions.getPaleo)
 router.post('/addNewRaw',actions.addNewRaw)
 router.get('/getRaw',actions.getRaw)
-
+router.post('/addNewCarb',actions.addNewCarb)
+router.get('/getCarb',actions.getCarb)
 
 module.exports = router

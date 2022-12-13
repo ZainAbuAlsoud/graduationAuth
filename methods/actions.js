@@ -366,6 +366,15 @@ addNewSugar:function(req,res){
         })
     }
 },
+
+getSugar: function(req,res){
+        
+    sugar.find({}).lean().exec(function(err, result) {
+        if (err) res.json({success: false, msg:err});
+        res.json({success:true,msg:result})
+        
+      });
+},
 }
 
 module.exports = functions

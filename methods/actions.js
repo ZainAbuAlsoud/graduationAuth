@@ -9,6 +9,7 @@ var paleo=require('../models/paleo')
 var raw=require('../models/raw')
 var carb=require('../models/lowcarb')
 var sugar=require('../models/sugar')
+var diet=require('../models/flags')
 
 var functions ={
     addNew:function(req,res){
@@ -374,6 +375,98 @@ getSugar: function(req,res){
         res.json({success:true,msg:result})
         
       });
+},
+addDiet:function(req,res){
+    if((!req.body.keto) || (!req.body.paleo) || (!req.body.vegetarian) || (!req.body.raw) || (!req.body.carb) || (!req.body.sugar) || (!req.body.num)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newDiet = diet({
+            keto:req.body.keto,
+            paleo: req.body.paleo,
+            vegetarian:req.body.vegetarian,
+            raw: req.body.raw,
+            carb:req.body.carb,
+            sugar:req.body.sugar,
+            num:req.body.num
+        });
+        newDiet.save(function(err,newDiet){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
+},
+
+getDiet: function(req,res){
+    diet.findOne({
+    num:'1'
+},function(err,diet){
+if(err) throw err
+if(!diet){
+    res.status(403).send({success:true,msg:'User not found'})
+}
+else{
+   if(diet.keto==false && diet.paleo==false && diet.vegetarian==false && diet.raw==false && diet.carb==false && diet.sugar==false){
+     
+     res.json({success:true,msg:'1'})
+   }
+
+   else if(diet.keto==true){
+    res.json({success:true,msg:'2'})
+   }
+        
+    else if(diet.paleo==true){
+    res.json({success:true,msg:'3'})}
+ 
+    else if(diet.vegetarian==true){
+    res.json({success:true,msg:'4'})}
+
+    else if(diet.raw==true){
+    res.json({success:true,msg:'5'})}
+
+    else if(diet.carb==true){
+    res.json({success:true,msg:'6'})}
+
+    else if(diet.sugar==true){
+    res.json({success:true,msg:'7'})}
+
+    else{
+    res.json({success:true,msg:'8'})}
+}
+})
+},
+updateDiet:function(req,res){
+
+    diet.findOneAndUpdate({ num: req.body.num }, {
+        
+        keto:req.body.keto,
+        paleo: req.body.paleo,
+        vegetarian:req.body.vegetarian,
+        raw: req.body.raw,
+        carb:req.body.carb,
+        sugar:req.body.sugar,
+        
+       }, { runValidators: true },
+        
+    
+       function (err) {
+        if (err) {
+         err.type = 'database';
+         res.json({success: false, msg:err})
+        }
+        res.json({success: true, msg:'update done'})
+      
+       
+       }
+       )
+      
+       ;
 },
 }
 

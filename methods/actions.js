@@ -10,6 +10,7 @@ var raw=require('../models/raw')
 var carb=require('../models/lowcarb')
 var sugar=require('../models/sugar')
 var diet=require('../models/flags')
+var food=require('../models/food')
 
 var functions ={
     addNew:function(req,res){
@@ -467,6 +468,76 @@ updateDiet:function(req,res){
        )
       
        ;
+},
+
+addNewFood:function(req,res){
+    if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newFood = food({
+            name:req.body.name,
+            weight: req.body.weight,
+            fats:req.body.fats,
+            protein: req.body.protein,
+            calories:req.body.calories,
+        });
+        newFood.save(function(err,newFood){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
+},
+
+getCalories: function(req,res){
+        var c=0;
+        food.countDocuments().then((count_documents) => {
+            food.find({},{"calories": 1}).lean().exec(function(err, result) {
+                if (err) res.json({success: false, msg:err});
+                for (let i = 0; i <count_documents; i++){
+                   c=c+parseFloat(result[i].calories);
+                }
+                res.json({success:true,msg: c.toFixed(2)})
+              });
+        });
+     
+  
+},
+
+getFats: function(req,res){
+    var c=0;
+    food.countDocuments().then((count_documents) => {
+        food.find({},{"fats": 1}).lean().exec(function(err, result) {
+            if (err) res.json({success: false, msg:err});
+            for (let i = 0; i <count_documents; i++){
+               c=c+parseFloat(result[i].fats);
+            }
+            res.json({success:true,msg: c.toFixed(2)})
+          });
+    });
+ 
+
+},
+
+getProtein: function(req,res){
+    var c=0;
+    food.countDocuments().then((count_documents) => {
+        food.find({},{"protein": 1}).lean().exec(function(err, result) {
+            if (err) res.json({success: false, msg:err});
+            for (let i = 0; i <count_documents; i++){
+               c=c+parseFloat(result[i].protein);
+            }
+            res.json({success:true,msg: c.toFixed(2)})
+          });
+    });
+ 
+
 },
 }
 

@@ -471,12 +471,13 @@ updateDiet:function(req,res){
 },
 
 addNewFood:function(req,res){
-    if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories)){
+    if((!req.body.name) || (!req.body.weight) || (!req.body.fats) || (!req.body.protein) || (!req.body.calories) || (!req.body.email)){
         res.json({success: false , msg:'Enter all fields'})
 
     }
     else{
         var newFood = food({
+            email:req.body.email,
             name:req.body.name,
             weight: req.body.weight,
             fats:req.body.fats,
@@ -498,10 +499,13 @@ addNewFood:function(req,res){
 getCalories: function(req,res){
         var c=0;
         food.countDocuments().then((count_documents) => {
-            food.find({},{"calories": 1}).lean().exec(function(err, result) {
+
+            food.find({},{"calories": 1,"email": 2}).lean().exec(function(err, result) {
                 if (err) res.json({success: false, msg:err});
                 for (let i = 0; i <count_documents; i++){
-                   c=c+parseFloat(result[i].calories);
+                   if(result[i].email==req.headers.email)
+                     c=c+parseFloat(result[i].calories);
+                    
                 }
                 res.json({success:true,msg: c.toFixed(2)})
               });

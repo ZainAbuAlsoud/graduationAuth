@@ -1,6 +1,10 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 var foodSchema = new Schema({
+    email:{
+        type: String,
+        require: true
+    },
     name:{
         type: String,
         require: true

@@ -34,4 +34,5 @@ router.post('/addNewFood',actions.addNewFood)
 router.get('/getCalories',actions.getCalories)
 router.get('/getFats',actions.getFats)
 router.get('/getProtein',actions.getProtein)
+router.post('/checkDiet',actions.checkDiet)
 module.exports = router

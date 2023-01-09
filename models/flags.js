@@ -1,6 +1,10 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 var dietSchema = new Schema({
+    email:{
+        type:String,
+        require:true
+    },
     num:{
         type: String,
         require: true

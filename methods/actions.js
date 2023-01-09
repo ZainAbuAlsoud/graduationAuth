@@ -378,12 +378,13 @@ getSugar: function(req,res){
       });
 },
 addDiet:function(req,res){
-    if((!req.body.keto) || (!req.body.paleo) || (!req.body.vegetarian) || (!req.body.raw) || (!req.body.carb) || (!req.body.sugar) || (!req.body.num)){
+    if((!req.body.email)||(!req.body.keto) || (!req.body.paleo) || (!req.body.vegetarian) || (!req.body.raw) || (!req.body.carb) || (!req.body.sugar) || (!req.body.num)){
         res.json({success: false , msg:'Enter all fields'})
 
     }
     else{
         var newDiet = diet({
+            email:req.body.email,
             keto:req.body.keto,
             paleo: req.body.paleo,
             vegetarian:req.body.vegetarian,
@@ -395,13 +396,27 @@ addDiet:function(req,res){
         newDiet.save(function(err,newDiet){
             if(err){
                 res.json({success: false, msg:'Failed to save'})
-                console.log(err)
+                
             }
             else{
                 res.json({success:true,msg:'Successfully saved'})
             }
         })
     }
+},
+
+checkDiet:function(req,res){
+    diet.findOne({
+        email:req.body.email
+    },function(err,diet){
+        if(err) throw err
+        if(!diet){
+               res.status(403).send({success:false,msg:'User not found'})
+         }else{
+            console.log(diet.email)
+          res.status(403).send({success:true,msg:'User found'})
+           }
+    })
 },
 
 getDiet: function(req,res){
@@ -517,10 +532,11 @@ getCalories: function(req,res){
 getFats: function(req,res){
     var c=0;
     food.countDocuments().then((count_documents) => {
-        food.find({},{"fats": 1}).lean().exec(function(err, result) {
+        food.find({},{"fats": 1,"email": 2}).lean().exec(function(err, result) {
             if (err) res.json({success: false, msg:err});
             for (let i = 0; i <count_documents; i++){
-               c=c+parseFloat(result[i].fats);
+                if(result[i].email==req.headers.email)
+                 c=c+parseFloat(result[i].fats);
             }
             res.json({success:true,msg: c.toFixed(2)})
           });
@@ -532,10 +548,11 @@ getFats: function(req,res){
 getProtein: function(req,res){
     var c=0;
     food.countDocuments().then((count_documents) => {
-        food.find({},{"protein": 1}).lean().exec(function(err, result) {
+        food.find({},{"protein": 1,"email": 2}).lean().exec(function(err, result) {
             if (err) res.json({success: false, msg:err});
             for (let i = 0; i <count_documents; i++){
-               c=c+parseFloat(result[i].protein);
+                if(result[i].email==req.headers.email)
+                 c=c+parseFloat(result[i].protein);
             }
             res.json({success:true,msg: c.toFixed(2)})
           });

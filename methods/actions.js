@@ -11,6 +11,9 @@ var carb=require('../models/lowcarb')
 var sugar=require('../models/sugar')
 var diet=require('../models/flags')
 var food=require('../models/food')
+var over=require('../models/over')
+var under=require('../models/under')
+var normal=require('../models/normal')
 
 var functions ={
     addNew:function(req,res){
@@ -413,7 +416,7 @@ checkDiet:function(req,res){
         if(!diet){
                res.status(403).send({success:false,msg:'User not found'})
          }else{
-            console.log(diet.email)
+            
           res.status(403).send({success:true,msg:'User found'})
            }
     })
@@ -421,7 +424,7 @@ checkDiet:function(req,res){
 
 getDiet: function(req,res){
     diet.findOne({
-    num:'1'
+    email:req.headers.email
 },function(err,diet){
 if(err) throw err
 if(!diet){
@@ -459,7 +462,7 @@ else{
 },
 updateDiet:function(req,res){
 
-    diet.findOneAndUpdate({ num: req.body.num }, {
+    diet.findOneAndUpdate({ email: req.body.email }, {
         
         keto:req.body.keto,
         paleo: req.body.paleo,
@@ -559,6 +562,74 @@ getProtein: function(req,res){
     });
  
 
+},
+addNewOver:function(req,res){
+    if((!req.body.name) || (!req.body.desc) || (!req.body.video)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newOver = over({
+            name:req.body.name,
+            desc: req.body.desc,
+            video:req.body.video,
+        });
+        newOver.save(function(err,newOver){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
+},
+
+addNewUnder:function(req,res){
+    if((!req.body.name) || (!req.body.desc) || (!req.body.video)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newUnder = under({
+            name:req.body.name,
+            desc: req.body.desc,
+            video:req.body.video,
+        });
+        newUnder.save(function(err,newUnder){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
+},
+
+addNewNormal:function(req,res){
+    if((!req.body.name) || (!req.body.desc) || (!req.body.video)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newNormal =normal({
+            name:req.body.name,
+            desc: req.body.desc,
+            video:req.body.video,
+        });
+        newNormal.save(function(err,newNormal){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
 },
 }
 

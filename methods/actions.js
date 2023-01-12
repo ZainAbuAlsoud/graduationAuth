@@ -80,6 +80,7 @@ var functions ={
         })
     },
 
+
     addNewBMI:function(req,res){
         if((!req.body.email) || (!req.body.weight) || (!req.body.age) || (!req.body.height) || (!req.body.name)){
             res.json({success: false , msg:'Enter all fields'})
@@ -408,19 +409,39 @@ addDiet:function(req,res){
     }
 },
 
-checkDiet:function(req,res){
+checkDiet: function(req,res){
     diet.findOne({
-        email:req.body.email
-    },function(err,diet){
-        if(err) throw err
-        if(!diet){
-               res.status(403).send({success:false,msg:'User not found'})
-         }else{
-            
-          res.status(403).send({success:true,msg:'User found'})
-           }
-    })
+email:req.body.email
+},function(err,diet){
+if(err) throw err
+if(!diet){//not exist
+    res.json({success: false, msg:'User not found'})
+    // console.log('User not found')
+}
+else{//if exist
+    res.json({success: false, msg:'User already exist'})
+    console.log('User found')
+        
+    
+}
+})
 },
+
+// checkDiet:function(req,res){
+//     diet.findOne({
+//         email:req.body.email
+//     },function(err,diet){
+//         if(err) throw err
+//         if(!diet){
+//                res.status(403).send({success:false,msg:'User not found'})
+//             //  console.log(email)
+//          }else{
+            
+//           res.status(403).send({success:true,msg:'User found'})
+//           console.log("found")
+//            }
+//     })
+// },
 
 getDiet: function(req,res){
     diet.findOne({
@@ -630,6 +651,15 @@ addNewNormal:function(req,res){
             }
         })
     }
+},
+
+getNormal: function(req,res){
+        
+    normal.find({}).lean().exec(function(err, result) {
+        if (err) res.json({success: false, msg:err});
+        res.json({success:true,msg:result})
+        
+      });
 },
 }
 

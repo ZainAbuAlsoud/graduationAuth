@@ -38,4 +38,6 @@ router.post('/checkDiet',actions.checkDiet)
 router.post('/addNewOver',actions.addNewOver)
 router.post('/addNewUnder',actions.addNewUnder)
 router.post('/addNewNormal',actions.addNewNormal)
+router.get('/getNormal',actions.getNormal)
+
 module.exports = router

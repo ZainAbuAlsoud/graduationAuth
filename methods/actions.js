@@ -661,6 +661,24 @@ getNormal: function(req,res){
         
       });
 },
+
+getOver: function(req,res){
+        
+    over.find({}).lean().exec(function(err, result) {
+        if (err) res.json({success: false, msg:err});
+        res.json({success:true,msg:result})
+        
+      });
+},
+
+getUnder: function(req,res){
+        
+    under.find({}).lean().exec(function(err, result) {
+        if (err) res.json({success: false, msg:err});
+        res.json({success:true,msg:result})
+        
+      });
+},
 }
 
 module.exports = functions

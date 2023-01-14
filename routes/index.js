@@ -41,5 +41,8 @@ router.post('/addNewNormal',actions.addNewNormal)
 router.get('/getNormal',actions.getNormal)
 router.get('/getOver',actions.getOver)
 router.get('/getUnder',actions.getUnder)
+router.post('/addWater',actions.addNewWater)
+router.post('/updateWater',actions.updateWater)
+router.post('/checkWater',actions.checkwater)
 
 module.exports = router

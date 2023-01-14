@@ -14,6 +14,7 @@ var food=require('../models/food')
 var over=require('../models/over')
 var under=require('../models/under')
 var normal=require('../models/normal')
+var water=require('../models/water')
 
 var functions ={
     addNew:function(req,res){
@@ -679,6 +680,63 @@ getUnder: function(req,res){
         
       });
 },
+
+addNewWater:function(req,res){
+    if((!req.body.name) || (!req.body.percent)){
+        res.json({success: false , msg:'Enter all fields'})
+
+    }
+    else{
+        var newWater = water({
+            name:req.body.name,
+            percent: req.body.percent
+        });
+        newWater.save(function(err,newWater){
+            if(err){
+                res.json({success: false, msg:'Failed to save'})
+                console.log(err)
+            }
+            else{
+                res.json({success:true,msg:'Successfully saved'})
+            }
+        })
+    }
+},
+
+checkwater: function(req,res){
+    water.findOne({
+name:req.body.name
+},function(err,water){
+if(err) throw err
+if(!water){//not exist
+    
+    res.json({success: false, msg:'0'})
+    // console.log('User not found')
+}
+else{//if exist
+    res.json({success: true, msg:water.percent})
+ 
+}
+})
+},
+
+
+updateWater: function(req,res){
+    water.findOneAndUpdate({ name: req.body.name }, {
+        name: req.body.name,
+        percent:req.body.percent,
+      
+       }, { runValidators: true }, function (err) {
+        if (err) {
+         err.type = 'database';
+         res.json({success: false, msg:err})
+        }
+        res.json({success: true, msg:'update done'})
+      
+       
+       });
+},
+
 }
 
 module.exports = functions

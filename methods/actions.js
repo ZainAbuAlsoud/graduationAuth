@@ -428,6 +428,8 @@ else{//if exist
 })
 },
 
+
+
 // checkDiet:function(req,res){
 //     diet.findOne({
 //         email:req.body.email
@@ -553,6 +555,8 @@ getCalories: function(req,res){
      
   
 },
+
+
 
 getFats: function(req,res){
     var c=0;
@@ -719,6 +723,7 @@ else{//if exist
 }
 })
 },
+
 
 
 updateWater: function(req,res){
